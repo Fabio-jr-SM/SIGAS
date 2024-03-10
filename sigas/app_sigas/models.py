@@ -36,10 +36,18 @@ class Aluno(models.Model):
     # Adicione campos específicos do Aluno, se necessário
     numero_matricula = models.CharField(max_length=20)
 
+    class Meta:
+        verbose_name = "Aluno"
+        verbose_name_plural = "Alunos"
+
 class Professor(models.Model):
     pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
     # Adicione campos específicos do Professor, se necessário
     salario = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        verbose_name = "Professor"
+        verbose_name_plural = "Professores"
 
 
 class Adm(models.Model):
