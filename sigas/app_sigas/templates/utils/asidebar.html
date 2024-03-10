@@ -1,0 +1,57 @@
+<aside id="sidebar">
+    <div class="d-flex">
+        <button class="toggle-btn" type="button">
+            <i class="bi bi-grid"></i>
+        </button>
+        <div class="sidebar-logo">
+            <a href="#" style="text-decoration: none;">SIGAS</a>
+        </div>
+    </div>
+    <ul class="sidebar-nav">
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+                <i class="bi bi-person-circle"></i>
+                <span>Perfil</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+                <i class="bi bi-hourglass-bottom"></i>
+                <span>Horario</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#auth"
+                aria-expanded="false" aria-controls="auth">
+                <i class="bi bi-backpack4-fill"></i>
+                <span>Ensino</span>
+            </a>
+            <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">NEAD</a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">Duvidas</a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+                <i class="bi bi-bell-fill"></i>
+                <span>Notificação</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+                <i class="bi bi-gear-fill"></i>
+                <span>Configurações</span>
+            </a>
+        </li>
+    </ul>
+    <div class="sidebar-footer">
+        <a href="{% url 'logout' %}" class="sidebar-link">
+            <i class="bi bi-box-arrow-left"></i>
+            <span>Sair</span>
+        </a>
+    </div>
+</aside>
