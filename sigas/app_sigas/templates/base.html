@@ -37,9 +37,7 @@
   {% block content %}
   {% endblock %}
 
-  {% if not user.is_authenticated %}
-    {% include 'utils/footer.html' %}
-  {% endif %}
+  
   <script>
     const hamBurger = document.querySelector(".toggle-btn");
 

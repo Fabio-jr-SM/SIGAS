@@ -4,24 +4,22 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from .models import Aluno
 
 def cadastro(request):
-    if request.method == 'GET':
-        return render(request,'autenticacao/cadastro/cadastro.html')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            Aluno.objects.create(pessoa=user, numero_matricula=form.cleaned_data['numero_matricula'])
+            return redirect('pagina_sucesso')
     else:
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        senha = request.POST.get('password')
+        form = UserCreationForm()
+    return render(request, 'autenticacao/cadastro/cadastro.html', {'form': form})
 
-        user = User.objects.filter(username=username).first()
-
-        if user:
-            return HttpResponse('Usuario já cadastrado')
-        
-        user = User.objects.create_user(username=username,email=email,password=senha)
-        user.save()
-        
-        return HttpResponse("Usuario cadastrado com sucesso")
+def pagina_sucesso(request):
+    return render(request, 'pagina_sucesso.html')
     
 def logout_view(request):
     logout(request)
