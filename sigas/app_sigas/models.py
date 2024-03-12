@@ -1,10 +1,12 @@
+import datetime
 from django.contrib.auth.models import AbstractUser,Group,Permission
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 class Pessoa(AbstractUser):
-    # Adicione campos adicionais, se necessário
-    idade = models.IntegerField()
+    nome_completo = models.CharField(max_length=255,default='')
+    data_nascimento = models.DateField(default=datetime.date.today)
+    matricula = models.CharField(max_length=20,default='')
     
     class Meta:
         verbose_name = 'Pessoa'
@@ -33,24 +35,8 @@ class Pessoa(AbstractUser):
     )    
 class Aluno(models.Model):
     pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
-    # Adicione campos específicos do Aluno, se necessário
-    numero_matricula = models.CharField(max_length=20)
+    curso_superior = models.CharField(max_length=100,default='')
 
     class Meta:
         verbose_name = "Aluno"
         verbose_name_plural = "Alunos"
-
-class Professor(models.Model):
-    pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
-    # Adicione campos específicos do Professor, se necessário
-    salario = models.DecimalField(max_digits=10, decimal_places=2)
-
-    class Meta:
-        verbose_name = "Professor"
-        verbose_name_plural = "Professores"
-
-
-class Adm(models.Model):
-    pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
-    # Adicione campos específicos do Professor, se necessário
-    salario = models.DecimalField(max_digits=10, decimal_places=2)
