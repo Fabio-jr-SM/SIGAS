@@ -10,6 +10,13 @@ Sigas
 
     <div class="main p-3">
         <div class="col-md-4 mx-auto mt-3">
+            {% if error_message %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ error_message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+
             <h4 class="d-flex align-items-center"><i class="bi bi-lock-fill mr-2"></i>Login SIGAS</h4> 
 
             <form action="{% url 'login' %}" method="post" class="mt-3">

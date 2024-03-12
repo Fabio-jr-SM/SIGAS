@@ -10,9 +10,9 @@ Sigas - Aluno
 
     <div class="main p-3">
         <div class="container">
-            <h2 class="mt-5 mb-3">Formulário de Registro</h2>
+            <h2 class="mt-5 mb-3">Formulário de Registro - Professor</h2>
 
-            <form action="{% url 'cadastro' %}" method="post">
+            <form action="{% url 'cadastro_professor' %}" method="post">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="nome_completo">Nome Completo:</label>
