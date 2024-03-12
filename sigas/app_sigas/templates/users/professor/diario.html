@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sigas - Inicio
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    {% include 'utils/asidebar.html' %}
+
+    
+    <div class="main p-3">
+        <div class="container">
+            <h4>Diarios</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Disciplina</th>
+                        <th scope="col">Turno</th>
+                        <th scope="col">Detalhes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for disciplina in disciplinas %}
+                        <tr>
+                            <td>{{ disciplina.nome }}</td>
+                            <td>{{ disciplina.turno }}</td>
+                            <td>
+                                <a href="#" class="btn btn-secondary">Ver Diário</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        </div>
+        {% include 'utils/footer.html' %}
+    </div>
+</div>
+
+
+
+{% endblock %}

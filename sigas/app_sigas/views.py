@@ -3,63 +3,77 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-#from django.contrib.auth.forms import UserCreationForm
-from .models import Aluno,Professor,Pessoa
+from .models import Aluno,Professor,Pessoa,Curso
+import random
+import datetime
 
+
+@login_required(login_url='login')
+def perfil(request):
+    # Obtém a pessoa associada ao usuário logado
+    pessoa_logada = Pessoa.objects.get(user=request.user)
+    
+    # Obtém o professor associado à pessoa logada
+    professor_logado = Professor.objects.get(pessoa=pessoa_logada)
+    
+    # Prepara os dados do professor para exibição
+    dados_professor = {
+        'Nome Completo': pessoa_logada.nome_completo,
+        'Data de Nascimento': pessoa_logada.data_nascimento,
+        'Matrícula': pessoa_logada.matricula,
+        'Data de Admissão': professor_logado.data_admissao,
+        'Turno': professor_logado.turno,
+        'Remuneração': professor_logado.remuneracao
+    }
+    
+    return render(request, 'users/perfil.html', {'dados_professor': dados_professor})
+
+@login_required(login_url='login')
+def diario(request):
+    professor_logado = Professor.objects.get(pessoa__user=request.user)
+
+    disciplinas_do_professor = professor_logado.disciplina.all()
+    
+    return render(request,'users/professor/diario.html',{'disciplinas': disciplinas_do_professor})
 
 '''
 CADASTRO - PRECISA ARRUMAR
 '''
+
+@login_required(login_url='login')
 def cadastro_home(request):
     return render(request,'autenticacao/cadastro/cadastro_home.html')
     
     
+@login_required(login_url='login')
 def cadastro_aluno(request):
+    sucess_message = None
+
     if request.method == 'POST':
         nome_completo = request.POST.get("nome_completo")
         data_nascimento = request.POST.get("data_nascimento")
-        matricula = request.POST.get("matricula")
-        curso_superior = request.POST.get("curso_superior")
+        matricula = gerar_matricula()
         senha = request.POST.get("senha")
         email = request.POST.get("email")
 
         # Criar usuário
-        user = User.objects.create_user(username=email, password=senha, email=email, is_active=True)
+        user = User.objects.create_user(username=matricula, password=senha, email=email, is_active=True)
         user.nome_completo = nome_completo
         user.data_nascimento = data_nascimento
         user.matricula = matricula
         user.save()
 
         # Criar registro de aluno associado
-        aluno = Aluno.objects.create(user=user, curso_superior=curso_superior)
-        
-        return render(request, 'pagina_sucesso.html')
+        aluno = Aluno.objects.create(user=user, )
+        sucess_message = 'Cadastrado com sucesso'
+        return render(request, 'autenticacao/cadastro/cadastro_home.html',{'sucess_message': sucess_message})
     else:
         return render(request, 'autenticacao/cadastro/cadastro_aluno.html')
       
         
+@login_required(login_url='login')
 def cadastro_professor(request):
-    if request.method == 'POST':
-        nome_completo = request.POST.get("nome_completo")
-        data_nascimento = request.POST.get("data_nascimento")
-        matricula = request.POST.get("matricula")
-        curso_superior = request.POST.get("curso_superior")
-        senha = request.POST.get("senha")
-        email = request.POST.get("email")
-
-        # Criar usuário
-        user = User.objects.create_user(username=email, password=senha, email=email, is_active=True)
-        user.nome_completo = nome_completo
-        user.data_nascimento = data_nascimento
-        user.matricula = matricula
-        user.save()
-
-        # Criar registro de aluno associado
-        professor = Professor.objects.create(user=user, curso_superior=curso_superior)
-
-        return render(request, 'pagina_sucesso.html')
-    else:
-        return render(request, 'autenticacao/cadastro/cadastro_professor.html')
+    pass
 
     
 def logout_view(request):
@@ -86,7 +100,7 @@ def login_view(request):
         
         if user is not None:
             login_django(request, user)
-            return redirect('pagina_aluno')  # Redireciona para a página do aluno
+            return redirect('pagina_inicial')  # Redireciona para a página do aluno
         else:
             error_message = 'Credenciais inválidas. Tente novamente.'
 
@@ -96,14 +110,29 @@ def login_view(request):
 
 
 @login_required(login_url='login')
-def pagina_aluno(request):
+def pagina_inicial(request):
     # Renderize o HTML para a página do aluno
-    return render(request, 'users/student/home_student.html')
+    return render(request, 'users/home_page.html')
         
 
 
+
+
+
 '''
-PAGINA DE SUCESS
+GERAR MATRICULA
 '''
-def pagina_sucesso(request):
-    return render(request, 'pagina_sucesso.html')
+def gerar_matricula():
+    # Obter a data atual
+    data_atual = datetime.date.today()
+    
+    # Obter ano, semestre (1 ou 2), dia e um código aleatório de 5 dígitos
+    ano = data_atual.year
+    semestre = (data_atual.month - 1) // 6 + 1
+    dia = data_atual.day
+    codigo_aleatorio = random.randint(10000, 99999)
+    
+    # Formatando a matrícula
+    matricula = f"{ano}S{semestre}{dia}{codigo_aleatorio}"
+    
+    return matricula
