@@ -68,3 +68,18 @@ class Disciplina(models.Model):
     
     def __str__(self):
         return self.nome
+    
+
+
+class RegistroAula(models.Model):
+    horario_inicio = models.TimeField()
+    horario_fim = models.TimeField()
+    descricao = models.TextField()
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE,default='')
+    
+
+class RegistroFalta(models.Model):
+    aluno = models.ForeignKey('Aluno', on_delete=models.CASCADE)
+    aula = models.ForeignKey(RegistroAula, on_delete=models.CASCADE,default='')
+    quantidade_faltas = models.IntegerField(default=0)
+    data = models.DateField(default=datetime.date.today)

@@ -1,9 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-from .models import Aluno,Professor,Pessoa,Curso,Disciplina
+from .models import Aluno,Professor,Pessoa,Curso,Disciplina,RegistroAula
 import random
 import datetime
 
@@ -38,6 +38,45 @@ def diario(request):
     
     return render(request,'users/professor/diario.html',{'disciplinas': disciplinas_do_professor})
 
+
+@login_required(login_url='login')
+def registrar_aula(request):
+    if request.method == 'POST':
+        horario_inicio = request.POST.get('horario_inicio')
+        horario_fim = request.POST.get('horario_fim')
+        descricao = request.POST.get('descricao')
+        
+        # Obtém a disciplina associada ao registro de aula
+        disciplina_id = request.POST.get('disciplina_id')
+        disciplina = Disciplina.objects.get(id=disciplina_id)
+        
+        # Crie um novo registro de aula com a disciplina associada
+        registro_aula = RegistroAula.objects.create(
+            horario_inicio=horario_inicio,
+            horario_fim=horario_fim,
+            descricao=descricao,
+            disciplina=disciplina  # Passa a disciplina relacionada
+        )
+        
+        # Redirecione para a página de detalhes do diário com o ID do registro de aula
+        return redirect('diario_detalhado', disciplina_id)
+    
+    return render(request, 'users/professor/registrar_aula.html')
+
+
+def diario_detalhado(request, disciplina_id):
+    professor_logado = Professor.objects.get(pessoa__user=request.user)
+
+    # Recupere o objeto Diario com base no diario_id fornecido
+    disciplina = professor_logado.disciplina.get(id=disciplina_id)
+
+    # Se houver uma aula registrada para esta disciplina
+    registro_aula = disciplina.registro_aula.first()
+
+    return render(request, 'users/professor/diario_detalhado.html', {'disciplina': disciplina, 'registro_aula': registro_aula})
+
+def registrar_falta(request):
+    return render(request,'users/professor/registrar_falta.html')
 
     
 def logout_view(request):
@@ -102,12 +141,10 @@ def gerar_matricula():
     return matricula
 
 
+
 '''
 POPULANDO O BANCO DE DADOS
 '''
-
-
-
 def popular_bd(request):
 
     # Criando superusuário

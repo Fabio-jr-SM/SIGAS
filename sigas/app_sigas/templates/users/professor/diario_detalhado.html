@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sigas - Inicio
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    {% include 'utils/asidebar.html' %}
+
+    
+    <div class="main p-3">
+        <div class="container">
+            <h4>Diario detalhado</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Disciplina</th>
+                        <th scope="col">Turno</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ disciplina.nome }}</td>
+                        <td>{{ disciplina.turno }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <a class="btn btn-secondary" href="{% url 'registrar_aula' %}">Registrar aula</a>
+            {% if registros_aula %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Registros de Aula</h5>
+                    {% for registro in registros_aula %}
+                    <p class="card-text">Horário de Início: {{ registro.horario_inicio }}</p>
+                    <p class="card-text">Horário de Fim: {{ registro.horario_fim }}</p>
+                    <p class="card-text">Descrição: {{ registro.descricao }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% include 'utils/footer.html' %}
+    </div>
+</div>
+
+
+
+{% endblock %}

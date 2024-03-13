@@ -4,15 +4,20 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('login/',views.login_view,name='login'),
-    path('perfil/',views.perfil,name='perfil'),
     path('', RedirectView.as_view(url='login', permanent=False)), 
+    path('logout/', views.logout_view, name='logout'),
 
     
-    path('logout/', views.logout_view, name='logout'),
+    path('perfil/',views.perfil,name='perfil'),
+
+
     path('pagina/', views.pagina_inicial, name='pagina_inicial'),
-
-
     path('pagina/diario', views.diario, name='diario'),
+    path('pagina/diario/<int:disciplina_id>/', views.diario_detalhado, name='diario_detalhado'),
+    
+    path('registraraula/', views.registrar_aula, name='registrar_aula'),
+    path('registrarfalta/', views.registrar_falta, name='registrar_falta'),
+    
 
     path('popularbd/',views.popular_bd,name='popularBd')
 ]

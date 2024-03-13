@@ -27,7 +27,7 @@ Sigas - Inicio
                             <td>{{ disciplina.nome }}</td>
                             <td>{{ disciplina.turno }}</td>
                             <td>
-                                <a href="#" class="btn btn-secondary">Ver Diário</a>
+                                <a href="{% url 'diario_detalhado' disciplina.id %}" class="btn btn-secondary">Ver Diário</a>
                             </td>
                         </tr>
                     {% endfor %}

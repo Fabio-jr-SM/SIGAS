@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sigas - Inicio
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    {% include 'utils/asidebar.html' %}
+
+    
+    <div class="main p-3">
+        <div class="container">
+            <h4>Registrar Falta</h4>
+            
+            <form action="{% url 'registrar_falta' %}" method="POST">
+                {% csrf_token %}
+                
+            </form>
+        </div>
+        {% include 'utils/footer.html' %}
+    </div>
+</div>
+
+
+
+{% endblock %}
