@@ -1,28 +1,41 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Sigas - Inicio
+Sigas - Registrar Falta
 {% endblock %}
 
 {% block content %}
-
-<div class="wrapper">
-    {% include 'utils/asidebar.html' %}
-
+<div class="container mt-5">
+    <h2>Registrar Falta</h2>
+    <h3>{{ disciplina.nome }}</h3>
     
-    <div class="main p-3">
-        <div class="container">
-            <h4>Registrar Falta</h4>
-            
-            <form action="{% url 'registrar_falta' %}" method="POST">
-                {% csrf_token %}
-                
-            </form>
-        </div>
-        {% include 'utils/footer.html' %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Aluno</th>
+                    <th>Quantidade de Faltas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aluno in alunos %}
+                <tr>
+                    <td>{{ aluno.pessoa.nome_completo }}</td>
+                    <td>{{ faltas.filter(aluno=aluno).count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <!-- Adicione campos do formulário, como quantidade de faltas -->
+        <div class="mb-3">
+            <label for="quantidade_faltas" class="form-label">Quantidade de Faltas:</label>
+            <input type="number" class="form-control" id="quantidade_faltas" name="quantidade_faltas" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrar Faltas</button>
+    </form>
 </div>
-
-
-
 {% endblock %}

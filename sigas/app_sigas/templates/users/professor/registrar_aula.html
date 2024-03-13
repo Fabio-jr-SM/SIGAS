@@ -15,8 +15,8 @@ Sigas - Inicio
             <h4>Registrar aula</h4>
             
             <form action="{% url 'registrar_aula' %}" method="POST">
+
                 {% csrf_token %}
-                <input type="hidden" name="disciplina_id" value="{{ disciplina.id }}">
                 
                 <div class="form-group">
                     <label for="horario_inicio">Horário de Início:</label>

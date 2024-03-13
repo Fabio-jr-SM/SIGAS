@@ -28,9 +28,9 @@ Sigas - Inicio
                 </tbody>
             </table>
             
-            <a class="btn btn-secondary" href="{% url 'registrar_aula' %}">Registrar aula</a>
+            <a class="btn btn-secondary" href="{{ url_registrar_aula }}">Registrar aula</a>
             {% if registros_aula %}
-            <div class="card">
+            <div class="card mt-4">
                 <div class="card-body">
                     <h5 class="card-title">Registros de Aula</h5>
                     {% for registro in registros_aula %}
@@ -39,6 +39,7 @@ Sigas - Inicio
                     <p class="card-text">Descrição: {{ registro.descricao }}</p>
                     {% endfor %}
                 </div>
+                <a class="btn btn-primary m-3" style="width: 140px;" href="{% url 'registrar_falta' %}">Registrar Falta</a>
             </div>
             {% endif %}
         </div>

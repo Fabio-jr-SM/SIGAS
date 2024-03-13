@@ -15,8 +15,8 @@ urlpatterns = [
     path('pagina/diario', views.diario, name='diario'),
     path('pagina/diario/<int:disciplina_id>/', views.diario_detalhado, name='diario_detalhado'),
     
-    path('registraraula/', views.registrar_aula, name='registrar_aula'),
-    path('registrarfalta/', views.registrar_falta, name='registrar_falta'),
+    path('pagina/diario/registraraula/', views.registrar_aula, name='registrar_aula'),
+    path('pagina/diario/registrarfalta/', views.registrar_falta, name='registrar_falta'),
     
 
     path('popularbd/',views.popular_bd,name='popularBd')

@@ -3,10 +3,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-from .models import Aluno,Professor,Pessoa,Curso,Disciplina,RegistroAula
+from .models import Aluno,Professor,Pessoa,Curso,Disciplina,RegistroAula, RegistroFalta
 import random
 import datetime
-
+from django.http import HttpResponseBadRequest
+from django.shortcuts import reverse
 
 @login_required(login_url='login')
 def perfil(request):
@@ -39,29 +40,6 @@ def diario(request):
     return render(request,'users/professor/diario.html',{'disciplinas': disciplinas_do_professor})
 
 
-@login_required(login_url='login')
-def registrar_aula(request):
-    if request.method == 'POST':
-        horario_inicio = request.POST.get('horario_inicio')
-        horario_fim = request.POST.get('horario_fim')
-        descricao = request.POST.get('descricao')
-        disciplina_id = request.POST.get('disciplina_id')  # Obtém o ID da disciplina do formulário
-        
-        disciplina = Disciplina.objects.get(id=disciplina_id)
-        print(disciplina)
-        # Crie um novo registro de aula
-        registro_aula = RegistroAula.objects.create(
-            horario_inicio=horario_inicio,
-            horario_fim=horario_fim,
-            descricao=descricao,
-            disciplina=disciplina
-        )
-        
-        # Redirecione para a página de detalhes do diário com o ID do registro de aula
-        return redirect('diario_detalhado', disciplina_id=disciplina_id)
-        
-    return render(request, 'users/professor/registrar_aula.html')
-
 
 def diario_detalhado(request, disciplina_id):
     # Obtenha a disciplina com o ID fornecido ou retorne um erro 404 se não existir
@@ -70,10 +48,67 @@ def diario_detalhado(request, disciplina_id):
     # Acesse os registros de aula relacionados à disciplina específica
     registros_aula = RegistroAula.objects.filter(disciplina=disciplina)
 
-    return render(request, 'users/professor/diario_detalhado.html', {'disciplina': disciplina, 'registros_aula': registros_aula})
+    # Construa a URL reversa para a view registrar_aula com o argumento disciplina_id
+    url_registrar_aula = reverse('registrar_aula')
+
+    return render(request, 'users/professor/diario_detalhado.html', {'disciplina': disciplina, 'registros_aula': registros_aula, 'url_registrar_aula': url_registrar_aula})
+
+@login_required(login_url='login')
+def registrar_aula(request):
+    if request.method == 'POST':
+        horario_inicio = request.POST.get('horario_inicio')
+        horario_fim = request.POST.get('horario_fim')
+        descricao = request.POST.get('descricao')
+        disciplina_id = request.POST.get('disciplina_id')
+
+        if not disciplina_id.isdigit():
+            print(disciplina_id)
+            return HttpResponseBadRequest("ID da disciplina inválido")
+
+        disciplina = get_object_or_404(Disciplina, id=disciplina_id)
+
+        # Crie um novo registro de aula
+        registro_aula = RegistroAula.objects.create(
+            horario_inicio=horario_inicio,
+            horario_fim=horario_fim,
+            descricao=descricao,
+            disciplina=disciplina
+        )
+
+        # Redirecione para a página de detalhes do diário com o ID do registro de aula
+        return redirect('diario_detalhado', disciplina_id=disciplina_id)
+
+    return render(request, 'users/professor/registrar_aula.html')
 
 def registrar_falta(request):
-    return render(request,'users/professor/registrar_falta.html')
+    disciplina_id = 1
+    disciplina = Disciplina.objects.get(pk=disciplina_id)
+    alunos = Aluno.objects.filter(curso=disciplina.curso)
+    faltas = RegistroFalta.objects.filter(aula__disciplina=disciplina)
+
+    if request.method == 'POST':
+        pass
+
+    return render(request, 'registrar_falta.html', {'disciplina': disciplina, 'alunos': alunos, 'faltas': faltas})
+
+    
+
+    '''if request.method == 'POST':
+        aluno_id = request.POST.get('aluno_id')
+        aula_id = request.POST.get('aula_id')
+        quantidade_faltas = request.POST.get('quantidade_faltas')
+
+        # Crie um novo registro de falta
+        registro_falta = RegistroFalta.objects.create(
+            aluno_id=aluno_id,
+            aula_id=aula_id,
+            quantidade_faltas=quantidade_faltas
+        )
+
+        # Redirecione para onde você deseja após o registro de falta
+        return redirect('diario_detalhado')
+
+    return render(request, 'users/professor/registrar_falta.html')'''
 
     
 def logout_view(request):
