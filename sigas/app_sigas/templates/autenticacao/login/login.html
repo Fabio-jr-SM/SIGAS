@@ -17,6 +17,13 @@ Sigas
                 </div>
             {% endif %}
 
+            {% if sucess_message %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ sucess_message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+
             <h4 class="d-flex align-items-center"><i class="bi bi-lock-fill mr-2"></i>Login SIGAS</h4> 
 
             <form action="{% url 'login' %}" method="post" class="mt-3">

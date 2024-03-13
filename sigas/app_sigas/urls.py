@@ -7,9 +7,6 @@ urlpatterns = [
     path('perfil/',views.perfil,name='perfil'),
     path('', RedirectView.as_view(url='login', permanent=False)), 
 
-    path('cadastro/',views.cadastro_home,name='cadastro'),
-    path('cadastro/aluno',views.cadastro_aluno,name='cadastro_aluno'),
-    path('cadastro/professor',views.cadastro_professor,name='cadastro_professor'),
     
     path('logout/', views.logout_view, name='logout'),
     path('pagina/', views.pagina_inicial, name='pagina_inicial'),
@@ -17,5 +14,5 @@ urlpatterns = [
 
     path('pagina/diario', views.diario, name='diario'),
 
-    #path('pagina/professor', views.pagina_professor, name='pagina_professor'),
+    path('popularbd/',views.popular_bd,name='popularBd')
 ]

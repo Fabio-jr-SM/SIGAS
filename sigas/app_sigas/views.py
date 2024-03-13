@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-from .models import Aluno,Professor,Pessoa,Curso
+from .models import Aluno,Professor,Pessoa,Curso,Disciplina
 import random
 import datetime
 
@@ -28,6 +28,8 @@ def perfil(request):
     
     return render(request, 'users/perfil.html', {'dados_professor': dados_professor})
 
+
+
 @login_required(login_url='login')
 def diario(request):
     professor_logado = Professor.objects.get(pessoa__user=request.user)
@@ -36,44 +38,6 @@ def diario(request):
     
     return render(request,'users/professor/diario.html',{'disciplinas': disciplinas_do_professor})
 
-'''
-CADASTRO - PRECISA ARRUMAR
-'''
-
-@login_required(login_url='login')
-def cadastro_home(request):
-    return render(request,'autenticacao/cadastro/cadastro_home.html')
-    
-    
-@login_required(login_url='login')
-def cadastro_aluno(request):
-    sucess_message = None
-
-    if request.method == 'POST':
-        nome_completo = request.POST.get("nome_completo")
-        data_nascimento = request.POST.get("data_nascimento")
-        matricula = gerar_matricula()
-        senha = request.POST.get("senha")
-        email = request.POST.get("email")
-
-        # Criar usuário
-        user = User.objects.create_user(username=matricula, password=senha, email=email, is_active=True)
-        user.nome_completo = nome_completo
-        user.data_nascimento = data_nascimento
-        user.matricula = matricula
-        user.save()
-
-        # Criar registro de aluno associado
-        aluno = Aluno.objects.create(user=user, )
-        sucess_message = 'Cadastrado com sucesso'
-        return render(request, 'autenticacao/cadastro/cadastro_home.html',{'sucess_message': sucess_message})
-    else:
-        return render(request, 'autenticacao/cadastro/cadastro_aluno.html')
-      
-        
-@login_required(login_url='login')
-def cadastro_professor(request):
-    pass
 
     
 def logout_view(request):
@@ -136,3 +100,59 @@ def gerar_matricula():
     matricula = f"{ano}S{semestre}{dia}{codigo_aleatorio}"
     
     return matricula
+
+
+'''
+POPULANDO O BANCO DE DADOS
+'''
+
+
+
+def popular_bd(request):
+
+    # Criando superusuário
+    User.objects.create_superuser('admin', 'admin@example.com', '1234')
+
+    # Criando usuários
+    professor_user = User.objects.create_user(username='professor', password='senha123')
+    aluno_user = User.objects.create_user(username='aluno', password='senha123')
+
+    # Criando pessoas
+    professor_pessoa = Pessoa.objects.create(nome_completo='Nome do Professor', 
+                                              data_nascimento=datetime.date(1980, 1, 1), 
+                                              matricula='0001',
+                                              user=professor_user)
+    aluno_pessoa = Pessoa.objects.create(nome_completo='Nome do Aluno', 
+                                          data_nascimento=datetime.date(1990, 1, 1), 
+                                          matricula='0002',
+                                          user=aluno_user)
+
+    # Criando cursos
+    curso1 = Curso.objects.create(nome='Engenharia da Computação', duracao='4 anos')
+    curso2 = Curso.objects.create(nome='Engenharia Aeronautica', duracao='3 anos')
+
+    # Criando disciplinas
+    disciplina1 = Disciplina.objects.create(nome='Algoritmos', turno='Manhã')
+    disciplina2 = Disciplina.objects.create(nome='Metodologia Cientifica', turno='Tarde')
+    disciplina3 = Disciplina.objects.create(nome='Algebra Linear', turno='Noite')
+
+    # Relacionando disciplinas com cursos
+    disciplina1.curso.add(curso1)
+    disciplina2.curso.add(curso1, curso2)
+    disciplina3.curso.add(curso2)
+
+    # Criando professores e associando disciplinas
+    professor = Professor.objects.create(pessoa=professor_pessoa,
+                                         data_admissao=datetime.date(2020, 1, 1),
+                                         turno='Integral',
+                                         remuneracao=5000.00)
+    professor.disciplina.add(disciplina1, disciplina2)
+
+    # Criando aluno e associando curso
+    aluno = Aluno.objects.create(pessoa=aluno_pessoa,
+                                 curso=curso1,
+                                 data_de_ingresso=datetime.date(2022, 1, 1),
+                                 situacao_academica='Ativo')
+
+    sucess_message = "Banco de dados populado com sucesso!"
+    return render(request, 'autenticacao/login/login.html', {'sucess_message': sucess_message})
