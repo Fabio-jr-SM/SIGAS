@@ -45,35 +45,32 @@ def registrar_aula(request):
         horario_inicio = request.POST.get('horario_inicio')
         horario_fim = request.POST.get('horario_fim')
         descricao = request.POST.get('descricao')
+        disciplina_id = request.POST.get('disciplina_id')  # Obtém o ID da disciplina do formulário
         
-        # Obtém a disciplina associada ao registro de aula
-        disciplina_id = request.POST.get('disciplina_id')
         disciplina = Disciplina.objects.get(id=disciplina_id)
-        
-        # Crie um novo registro de aula com a disciplina associada
+        print(disciplina)
+        # Crie um novo registro de aula
         registro_aula = RegistroAula.objects.create(
             horario_inicio=horario_inicio,
             horario_fim=horario_fim,
             descricao=descricao,
-            disciplina=disciplina  # Passa a disciplina relacionada
+            disciplina=disciplina
         )
         
         # Redirecione para a página de detalhes do diário com o ID do registro de aula
-        return redirect('diario_detalhado', disciplina_id)
-    
+        return redirect('diario_detalhado', disciplina_id=disciplina_id)
+        
     return render(request, 'users/professor/registrar_aula.html')
 
 
 def diario_detalhado(request, disciplina_id):
-    professor_logado = Professor.objects.get(pessoa__user=request.user)
+    # Obtenha a disciplina com o ID fornecido ou retorne um erro 404 se não existir
+    disciplina = get_object_or_404(Disciplina, id=disciplina_id)
 
-    # Recupere o objeto Diario com base no diario_id fornecido
-    disciplina = professor_logado.disciplina.get(id=disciplina_id)
+    # Acesse os registros de aula relacionados à disciplina específica
+    registros_aula = RegistroAula.objects.filter(disciplina=disciplina)
 
-    # Se houver uma aula registrada para esta disciplina
-    registro_aula = disciplina.registro_aula.first()
-
-    return render(request, 'users/professor/diario_detalhado.html', {'disciplina': disciplina, 'registro_aula': registro_aula})
+    return render(request, 'users/professor/diario_detalhado.html', {'disciplina': disciplina, 'registros_aula': registros_aula})
 
 def registrar_falta(request):
     return render(request,'users/professor/registrar_falta.html')

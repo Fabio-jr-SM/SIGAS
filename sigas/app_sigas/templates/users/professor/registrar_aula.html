@@ -16,6 +16,8 @@ Sigas - Inicio
             
             <form action="{% url 'registrar_aula' %}" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="disciplina_id" value="{{ disciplina.id }}">
+                
                 <div class="form-group">
                     <label for="horario_inicio">Horário de Início:</label>
                     <input type="time" id="horario_inicio" name="horario_inicio" class="form-control" required>
@@ -28,8 +30,7 @@ Sigas - Inicio
                     <label for="descricao">Descrição:</label>
                     <textarea id="descricao" name="descricao" class="form-control" required></textarea>
                 </div>
-                <input type="hidden" name="disciplina_id" value="{{ disciplina.id }}">
-
+                
                 <button type="submit" class="btn btn-primary">Registrar Aula</button>
             </form>
         </div>
