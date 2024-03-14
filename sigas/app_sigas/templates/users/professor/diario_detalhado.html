@@ -13,6 +13,7 @@ Sigas - Inicio
     <div class="main p-3">
         <div class="container">
             <h4>Diario detalhado</h4>
+            <a href="{% url 'diario' %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -28,19 +29,19 @@ Sigas - Inicio
                 </tbody>
             </table>
             
-            <a class="btn btn-secondary" href="{{ url_registrar_aula }}">Registrar aula</a>
+            <a class="btn btn-secondary" href="/pagina/diario/{{disciplina_id}}/registraraula/">Registrar aula</a>
             {% if registros_aula %}
+            {% for registro in registros_aula %}
             <div class="card mt-4">
-                <div class="card-body">
+                <div class="card-body" style="">
                     <h5 class="card-title">Registros de Aula</h5>
-                    {% for registro in registros_aula %}
                     <p class="card-text">Horário de Início: {{ registro.horario_inicio }}</p>
                     <p class="card-text">Horário de Fim: {{ registro.horario_fim }}</p>
                     <p class="card-text">Descrição: {{ registro.descricao }}</p>
-                    {% endfor %}
+                    <a class="btn btn-secondary m-3" style="width: 140px;" href="{% url 'registrar_falta' %}">Registrar Falta</a>
                 </div>
-                <a class="btn btn-primary m-3" style="width: 140px;" href="{% url 'registrar_falta' %}">Registrar Falta</a>
             </div>
+            {% endfor %}
             {% endif %}
         </div>
         {% include 'utils/footer.html' %}

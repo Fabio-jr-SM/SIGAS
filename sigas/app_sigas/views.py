@@ -40,7 +40,6 @@ def diario(request):
     return render(request,'users/professor/diario.html',{'disciplinas': disciplinas_do_professor})
 
 
-
 def diario_detalhado(request, disciplina_id):
     # Obtenha a disciplina com o ID fornecido ou retorne um erro 404 se não existir
     disciplina = get_object_or_404(Disciplina, id=disciplina_id)
@@ -49,21 +48,18 @@ def diario_detalhado(request, disciplina_id):
     registros_aula = RegistroAula.objects.filter(disciplina=disciplina)
 
     # Construa a URL reversa para a view registrar_aula com o argumento disciplina_id
-    url_registrar_aula = reverse('registrar_aula')
+    #url_registrar_aula = reverse('registrar_aula', kwargs={'disciplina_id': disciplina_id})
 
-    return render(request, 'users/professor/diario_detalhado.html', {'disciplina': disciplina, 'registros_aula': registros_aula, 'url_registrar_aula': url_registrar_aula})
+    return render(request, 'users/professor/diario_detalhado.html', {'disciplina': disciplina, 'registros_aula': registros_aula, 'disciplina_id': disciplina_id})
 
 @login_required(login_url='login')
-def registrar_aula(request):
+def registrar_aula(request, disciplina_id):
     if request.method == 'POST':
         horario_inicio = request.POST.get('horario_inicio')
         horario_fim = request.POST.get('horario_fim')
         descricao = request.POST.get('descricao')
-        disciplina_id = request.POST.get('disciplina_id')
 
-        if not disciplina_id.isdigit():
-            print(disciplina_id)
-            return HttpResponseBadRequest("ID da disciplina inválido")
+        
 
         disciplina = get_object_or_404(Disciplina, id=disciplina_id)
 
@@ -78,7 +74,7 @@ def registrar_aula(request):
         # Redirecione para a página de detalhes do diário com o ID do registro de aula
         return redirect('diario_detalhado', disciplina_id=disciplina_id)
 
-    return render(request, 'users/professor/registrar_aula.html')
+    return render(request, 'users/professor/registrar_aula.html', {'disciplina_id': disciplina_id})
 
 def registrar_falta(request):
     disciplina_id = 1
