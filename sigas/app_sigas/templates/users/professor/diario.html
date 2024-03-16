@@ -8,38 +8,40 @@ Sigas - Inicio
 
 <div class="wrapper">
     {% include 'utils/asidebar.html' %}
-
     
-    <div class="main p-3">
-        <div class="container">
-            <h4>Diarios</h4>
-            <a href="{% url 'pagina_inicial' %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Disciplina</th>
-                        <th scope="col">Turno</th>
-                        <th scope="col">Detalhes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for disciplina in disciplinas %}
+    {% if pessoa_logada.professor %}
+        <div class="main p-3">
+            <div class="container">
+                <h4>Diarios</h4>
+                <a href="{% url 'pagina_inicial' %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>{{ disciplina.nome }}</td>
-                            <td>{{ disciplina.turno }}</td>
-                            <td>
-                                <a href="{% url 'diario_detalhado' disciplina.id %}" class="btn btn-secondary">Ver Diário</a>
-                            </td>
+                            <th scope="col">Disciplina</th>
+                            <th scope="col">Curso</th>
+                            <th scope="col">Turno</th>
+                            <th scope="col">Detalhes</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            
+                    </thead>
+                    <tbody>
+                        {% for inscricao in disciplinas %}
+                            <tr>
+                                <td>{{ inscricao.disciplina.nome }}</td>
+                                <td>{{ inscricao.disciplina.curso.nome }}</td>
+                                <td>{{ inscricao.disciplina.turno }}</td>
+                                <td>
+                                    <a href="{% url 'diario_detalhado' inscricao.disciplina.id %}" class="btn btn-secondary">Ver Diário</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% include 'utils/footer.html' %}
         </div>
-        {% include 'utils/footer.html' %}
-    </div>
+    {% else %}
+        <h2>Você não tem acessoa a essa página</h2>
+    {% endif %}
 </div>
-
-
 
 {% endblock %}

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load permission_tags %}
+
 {% block title %}
 Sigas - Inicio
 {% endblock %}
@@ -9,38 +11,86 @@ Sigas - Inicio
 <div class="wrapper">
     {% include 'utils/asidebar.html' %}
 
-    
+
     <div class="main p-3">
         <div class="container">
-
-            <h2>Bem vindo, {{ user.username }}</h2>
+            {% if pessoa_logada.aluno or pessoa_logada.professor %}
+            <h2>Bem vindo, {{ pessoa_logada.nome_completo }}</h2>
+            {% elif user.is_staff %}
+            <h2>Bem vindo, Adminstrador</h2>
+            {% endif %}
 
             <div class="container overflow-hidden">
                 <div class="row gy-5">
                     <div class="col-6">
                         <h5 class="text-secondary">Acesso Rápido:</h5>
                         <ul class="list-group list-group-flush w-3">
+                            {% if pessoa_logada.aluno %}
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="{% url 'diario' %}"><i class="bi bi-envelope-paper-fill"></i>Diario</a></li>
+                                    class="nav-link" href="#"><i class="bi bi-newspaper"></i>Boletins</a>
+                            </li>
+
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="{% url 'perfil' %}"><i class="bi bi-person-circle"></i>Perfil</a></li>
+                                    class="nav-link" href="{% url 'perfil' %}"><i
+                                        class="bi bi-person-circle"></i>Perfil</a>
+                            </li>
+                            {% elif pessoa_logada.professor %}
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="#"><i class="bi bi-gear-fill"></i>Configurações</a></li>
-                        </ul>
-                        <br><br>
-                        <h5 class="text-secondary">Ensino:</h5>
-                        <ul class="list-group list-group-flush w-3">
+                                    class="nav-link" href="{% url 'diario' %}"><i
+                                        class="bi bi-envelope-paper-fill"></i>Diario</a>
+                            </li>
+
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="#">Requerimentos em Disciplina</a></li>
+                                    class="nav-link" href="{% url 'perfil' %}"><i
+                                        class="bi bi-person-circle"></i>Perfil</a>
+                            </li>
+                            {% elif user.is_staff %}
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="#">Boletins</a></li>
+                                    class="nav-link" href="{% url 'cadastro' %}"><i
+                                        class="bi bi-person-fill-add"></i>Cadastro Usuario</a>
+                            </li>
+                            {% endif %}
+
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="#">Dados do Aluno</a></li>
+                                    class="nav-link" href="#"><i class="bi bi-gear-fill"></i>Configurações</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-6">
+                        <!--CALENDARIO-->
                         <h5 class="text-secondary">Calendário:</h5>
-                        {% include 'utils/calendar.html' %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="table-success">
+                                        <th>Seg</th>
+                                        <th>Ter</th>
+                                        <th>Qua</th>
+                                        <th>Qui</th>
+                                        <th>Sex</th>
+                                        <th>Sáb</th>
+                                        <th>Dom</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for week in cal %}
+                                    <tr>
+                                        {% for day in week %}
+                                            {% if day == 0 %}
+                                                <td></td>
+                                            {% else %}
+                                                {% if day == now.day %}
+                                                    <td class="bg-success">{{ day }}</td>
+                                                {% else %}
+                                                    <td>{{ day }}</td>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>                            
+                        </div>
                     </div>
 
                 </div>

@@ -35,7 +35,7 @@ class Pessoa(models.Model):
 
 class Aluno(models.Model):
     pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
-    curso = models.OneToOneField('Curso', on_delete=models.CASCADE, related_name='aluno',default='')
+    curso = models.ManyToManyField('Curso', related_name='aluno',default='')
 
     SITUACAO_ACADEMICA_CHOICES = [
         ('Ativo', 'Ativo'),
@@ -46,30 +46,35 @@ class Aluno(models.Model):
     data_de_ingresso = models.DateField(default=datetime.date.today)
     situacao_academica = models.CharField(max_length=20, choices=SITUACAO_ACADEMICA_CHOICES, default='Ativo')
     
-    
-class Professor(models.Model):
-    pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
-    disciplina = models.ManyToManyField('Disciplina')
-    data_admissao = models.DateField(default=datetime.date.today)
-    turno = models.CharField(max_length=100, default='')
-    remuneracao = models.FloatField()
-    
+    def __str__(self):
+        return self.pessoa.nome_completo
+
 class Curso(models.Model):
     nome = models.CharField(max_length=100)
     duracao = models.CharField(max_length=100)
     
     def __str__(self):
         return self.nome
+    
+class Professor(models.Model):
+    pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
+    #disciplina = models.ManyToManyField('Disciplina')
+    data_admissao = models.DateField(default=datetime.date.today)
+    turno = models.CharField(max_length=100, default='')
+    remuneracao = models.FloatField()
+    
 
 class Disciplina(models.Model):
     nome = models.CharField(max_length=100)
     turno = models.CharField(max_length=100,default='')
-    curso = models.ManyToManyField('Curso',related_name='disciplinas',default='')
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE,default='')
     
     def __str__(self):
         return self.nome
     
-
+class InscricaoDisciplina(models.Model):
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
 
 class RegistroAula(models.Model):
     horario_inicio = models.TimeField()
@@ -77,9 +82,13 @@ class RegistroAula(models.Model):
     descricao = models.TextField()
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE,default='')
     
+    def __str__(self):
+        return f"{self.disciplina.nome} - {self.horario_inicio.strftime('%H:%M')}-{self.horario_fim.strftime('%H:%M')}"
 
 class RegistroFalta(models.Model):
     aluno = models.ForeignKey('Aluno', on_delete=models.CASCADE)
     aula = models.ForeignKey(RegistroAula, on_delete=models.CASCADE,default='')
     quantidade_faltas = models.IntegerField(default=0)
     data = models.DateField(default=datetime.date.today)
+
+    

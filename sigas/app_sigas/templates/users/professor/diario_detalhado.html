@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Sigas - Inicio
+Sigas - Detalhado
 {% endblock %}
 
 {% block content %}
@@ -9,41 +9,100 @@ Sigas - Inicio
 <div class="wrapper">
     {% include 'utils/asidebar.html' %}
 
-    
-    <div class="main p-3">
-        <div class="container">
-            <h4>Diario detalhado</h4>
-            <a href="{% url 'diario' %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Disciplina</th>
-                        <th scope="col">Turno</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ disciplina.nome }}</td>
-                        <td>{{ disciplina.turno }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <a class="btn btn-secondary" href="/pagina/diario/{{disciplina_id}}/registraraula/">Registrar aula</a>
-            {% if registros_aula %}
-            {% for registro in registros_aula %}
-            <div class="card mt-4">
-                <div class="card-body" style="">
-                    <h5 class="card-title">Registros de Aula</h5>
-                    <p class="card-text">Horário de Início: {{ registro.horario_inicio }}</p>
-                    <p class="card-text">Horário de Fim: {{ registro.horario_fim }}</p>
-                    <p class="card-text">Descrição: {{ registro.descricao }}</p>
-                    <a class="btn btn-secondary m-3" style="width: 140px;" href="{% url 'registrar_falta' %}">Registrar Falta</a>
+    {% if pessoa_logada.professor %}
+        <div class="main p-3">
+            <div class="container">
+                <h4>Diario detalhado</h4>
+                <a href="{% url 'diario' %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Disciplina</th>
+                            <th scope="col">Curso</th>
+                            <th scope="col">Turno</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ disciplina.nome }}</td>
+                            <td>
+                                {{ disciplina.curso.nome }}
+                            </td>
+                            <td>{{ disciplina.turno }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <a class="btn btn-secondary" href="{% url 'registrar_aula' disciplina.id %}">Registrar aula</a>
+                {% if registros_aula %}
+                {% for registro in registros_aula %}
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Registros de Aula</h5>
+                        <p class="card-text">Horário de Início: {{ registro.horario_inicio }}</p>
+                        <p class="card-text">Horário de Fim: {{ registro.horario_fim }}</p>
+                        <p class="card-text">Descrição: {{ registro.descricao }}</p>
+                        <a class="btn btn-secondary m-3" style="width: 140px;"
+                            href="/pagina/diario/{{disciplina_id}}/registrarfalta/">Registrar Falta</a>
+
+
+                        <!--BOTÃO DE DETALHES-->
+                        <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Detalhes
+                        </button>
+
+                        <!-- Conteúdo a ser Expandido/Retraído -->
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body mt-3">
+                                <h5>Detalhes</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Horário de Início</th>
+                                                <th>Horário de Fim</th>
+                                                <th>Faltas dos Alunos</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for aula in registros_aula %}
+                                            <tr>
+                                                <td>{{ aula.horario_inicio }}</td>
+                                                <td>{{ aula.horario_fim }}</td>
+                                                <td>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Aluno</th>
+                                                                <th>Quantidade</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for falta in aula.registrofalta_set.all %}
+                                                            <tr>
+                                                                <td>{{ falta.aluno.pessoa.nome_completo }}</td>
+                                                                <td>{{ falta.quantidade_faltas }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                {% endfor %}
+                {% endif %}
             </div>
-            {% endfor %}
-            {% endif %}
-        </div>
+        {% else %}
+            <h2>Você não tem acesso a essa pagina</h2>
+        {% endif %}
         {% include 'utils/footer.html' %}
     </div>
 </div>

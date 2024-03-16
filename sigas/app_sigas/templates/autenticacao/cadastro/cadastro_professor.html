@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sigas - Cadastro Professor
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    {% include 'utils/asidebar.html' %}
+    {% if user.is_staff %}
+
+    <div class="main p-3">
+        <div class="container">
+            <a href="{% url 'cadastro' %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
+            <h5 class="mt-4">Cadastrar Professor:</h5>
+            <form action="{% url 'cadastro_professor' %}" method="POST">
+                {% csrf_token %}
+                <!--Email-->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email">
+                </div>
+
+                <!--senha-->
+                <div class="form-group">
+                    <label for="senha">senha</label>
+                    <input type="password" class="form-control" name="senha">
+                </div>
+
+                <!--CRIAR PESSOA-->
+                <!--nome completo-->
+                <div class="form-group">
+                    <label for="nome_completo">Nome Completo</label>
+                    <input type="text" class="form-control" name="nome_completo">
+                </div>
+
+                <!--data de nascimento-->
+                <div class="form-group">
+                    <label for="nome_completo">Data de nascimento</label>
+                    <input type="date" class="form-control" name="data_nasc">
+                </div>
+
+                <!--remuneracao-->
+                <div class="form-group">
+                    <label for="remuneracao">remuneracao</label>
+                    <input type="number" class="form-control" name="remuneracao">
+                </div>
+
+                <!--Turno-->
+                <div class="form-group">
+                    <label for="disciplina">Turno:</label>
+                    <select name="turno" class="form-control">
+                        <option disabled selected>Selecione um turno</option>
+                        <option>Manhã</option>
+                        <option>Tarde</option>
+                        <option>Noite</option>
+                        <option>Integral</option>
+                    </select>
+                </div>
+
+                <!--disciplinas disponiveis-->
+                <div class="form-group">
+                    <label for="disciplinas">Disciplinas:</label><br>
+                    {% for disciplina, curso in disciplinas_com_cursos %}
+                    <input type="checkbox" name="disciplinas" value="{{ disciplina.id }}"> {{ disciplina.nome }} - {{ curso.nome }}<br>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-secondary mt-4">Cadastrar</button>
+            </form>
+            {% include 'utils/footer.html' %}
+        </div>
+    </div>
+    
+    
+    {% endif %}
+</div>
+{% endblock %}

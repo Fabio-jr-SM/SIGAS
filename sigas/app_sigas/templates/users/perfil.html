@@ -1,35 +1,71 @@
 {% extends 'base.html' %}
 
+{% load permission_tags %}
+
 {% block title %}
-Sigas - Inicio
+Sigas - Perfil
 {% endblock %}
 
 {% block content %}
-
 <div class="wrapper">
     {% include 'utils/asidebar.html' %}
 
-
     <div class="main p-3">
         <div class="container">
-            <h2>Perfil do Professor</h2>
-            <div class="table-responsive">
-                <table class="table">
+            <a href="{% url 'pagina_inicial' %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
+            {% if pessoa_logada.aluno %}
+                <h2>Perfil do Aluno</h2>
+                <table class="table table-striped">
                     <tbody>
-                        {% for key, value in dados_professor.items %}
                         <tr>
-                            <th>{{ key }}</th>
-                            <td>{{ value }}</td>
+                            <th scope="row">Nome</th>
+                            <td>{{ pessoa_logada.nome_completo }}</td>
                         </tr>
-                        {% endfor %}
+                        <tr>
+                            <th scope="row">Data de Nascimento</th>
+                            <td>{{ pessoa_logada.data_nascimento }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Matrícula</th>
+                            <td>{{ user.username }}</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Curso</th>
+                            <td>
+                                {% for curso in pessoa_logada.aluno.curso.all %}
+                                    {{ curso.nome }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <!-- Adicione mais informações do aluno conforme necessário -->
                     </tbody>
                 </table>
-            </div>
+            {% elif pessoa_logada.professor %}
+                <h2>Perfil do Professor</h2>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Nome</th>
+                            <td>{{ pessoa_logada.nome_completo }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Data de Nascimento</th>
+                            <td>{{ pessoa_logada.data_nascimento }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Remuneração</th>
+                            <td>{{ pessoa_logada.professor.remuneracao }}</td>
+                        </tr>
+                        <!-- Adicione mais informações do professor conforme necessário -->
+                    </tbody>
+                </table>
+            {% else %}
+                <h2>Você não tem acesso a essa página</h2>
+            {% endif %}
         </div>
         {% include 'utils/footer.html' %}
     </div>
 </div>
-
-
 
 {% endblock %}

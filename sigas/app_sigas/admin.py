@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Pessoa, Aluno, Professor, Curso, Disciplina,RegistroAula,RegistroFalta
+from .models import InscricaoDisciplina, Pessoa, Aluno, Professor, Curso, Disciplina,RegistroAula,RegistroFalta
 
 # Personalizando a classe de administração para cada modelo
 
@@ -7,31 +7,44 @@ class PessoaAdmin(admin.ModelAdmin):
     list_display = ('id', 'nome_completo', 'data_nascimento', 'matricula', 'user')
 
 class AlunoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'pessoa', 'curso', 'data_de_ingresso', 'situacao_academica')
+    list_display = ('id', 'pessoa', 'get_cursos', 'data_de_ingresso', 'situacao_academica')
+
+    def get_cursos(self, obj):
+        return ", ".join([curso.nome for curso in obj.curso.all()])
+
+    get_cursos.short_description = 'Cursos'
+
+
+class InscricaoDisciplinaInline(admin.TabularInline):
+    model = InscricaoDisciplina
+    extra = 1
 
 class ProfessorAdmin(admin.ModelAdmin):
     list_display = ('id', 'pessoa', 'data_admissao', 'turno', 'remuneracao', 'get_disciplinas')
 
     def get_disciplinas(self, obj):
-        return ", ".join([disciplina.nome for disciplina in obj.disciplina.all()])
+        return ", ".join([inscricao.disciplina.nome for inscricao in obj.inscricaodisciplina_set.all()])
+    
     get_disciplinas.short_description = 'Disciplinas'
+
+    inlines = [InscricaoDisciplinaInline]
+
 
 class CursoAdmin(admin.ModelAdmin):
     list_display = ('id', 'nome', 'duracao')
 
 class DisciplinaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'turno', 'get_cursos')
+    list_display = ('id', 'nome', 'turno', 'curso')
 
-    def get_cursos(self, obj):
-        return ", ".join([curso.nome for curso in obj.curso.all()])
-    get_cursos.short_description = 'Cursos'
+    
 
 
 
 class RegistroAulaAdmin(admin.ModelAdmin):
     list_display = ('id', 'horario_inicio','horario_fim','descricao')
+
 class RegistroFaltaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'data','aluno','aula')
+    list_display = ('id', 'data','aluno','aula','quantidade_faltas')
 
 # Registrando os modelos com suas classes de administração personalizadas
 

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sigas - Inicio
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    {% include 'utils/asidebar.html' %}
+
+    {% if user.is_staff %}
+    <div class="main p-3">
+        <div class="container">
+            <a href="{% url 'cadastro' %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
+            <h5 class="mt-4">Cadastrar Aluno:</h5>
+            <form action="{% url 'cadastro_aluno' %}" method="post">
+                {% csrf_token %}
+                <!--Email-->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email">
+                </div>
+
+                <!--senha-->
+                <div class="form-group">
+                    <label for="senha">senha</label>
+                    <input type="password" class="form-control" name="senha">
+                </div>
+
+                <!--CRIAR PESSOA-->
+                <!--nome completo-->
+                <div class="form-group">
+                    <label for="nome_completo">Nome Completo</label>
+                    <input type="text" class="form-control" name="nome_completo">
+                </div>
+
+                <!--data de nascimento-->
+                <div class="form-group">
+                    <label for="nome_completo">Data de nascimento</label>
+                    <input type="date" class="form-control" name="data_nasc">
+                </div>
+
+                <!--Cursos disponiveis-->
+                <div class="form-group">
+                    <label for="curso">Curso:</label>
+                    <select name="curso" id="curso" class="form-control">
+                        <option disabled selected>Selecione um curso</option>
+                        {% for curso in cursos %}
+                        <option value="{{ curso.id }}">{{ curso.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-secondary">Cadastrar</button>
+            </form>
+            {% include 'utils/footer.html' %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
