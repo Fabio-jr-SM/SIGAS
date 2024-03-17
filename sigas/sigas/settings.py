@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_sigas',
-    'rolepermissions'
+    'rolepermissions',
 ]
 
 MIDDLEWARE = [

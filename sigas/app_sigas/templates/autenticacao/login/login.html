@@ -29,10 +29,12 @@ Sigas
             <form action="{% url 'login' %}" method="post" class="mt-3">
                 {% csrf_token %}
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Username" name="username">
+                    <label for="Matricula">Matrícula</label>
+                    <input type="text" class="form-control" placeholder="Matricula" name="username">
                 </div>
                 <div class="form-group mt-3 mb-3">
-                    <input type="password" class="form-control" placeholder="Password" name="password">
+                    <label for="senha">Senha</label>
+                    <input type="password" class="form-control" placeholder="Senha" name="password">
                 </div>
                 <input type="submit" class="btn btn-secondary" value="Logar">
             </form>

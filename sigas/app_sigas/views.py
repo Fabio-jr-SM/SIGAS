@@ -141,6 +141,14 @@ def registrar_falta(request, disciplina_id):
                                                                     'pessoa_logada':pessoa_logada})
 
 
+def registrar_atividade(request,disciplina_id):
+    pessoa_logada = get_object_or_404(Pessoa, user=request.user)
+
+    disciplina = Disciplina.objects.get(pk=disciplina_id)
+    return render(request,'users/professor/registar_atividade.html',{'disciplina':disciplina,
+                                                                     'disciplina_id':disciplina_id,
+                                                                     'pessoa_logada':pessoa_logada})
+
 
 '''
 LOGIN E LOGOUT

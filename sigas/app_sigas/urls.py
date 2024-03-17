@@ -19,6 +19,7 @@ urlpatterns = [
     path('pagina/diario/<int:disciplina_id>/', views.diario_detalhado, name='diario_detalhado'),
     path('pagina/diario/<int:disciplina_id>/registraraula/', views.registrar_aula, name='registrar_aula'),
     path('pagina/diario/<int:disciplina_id>/registrarfalta/', views.registrar_falta, name='registrar_falta'),
+    path('pagina/diario/<int:disciplina_id>/registraratividade/', views.registrar_atividade, name='registrar_atividade'),
     
     #cadastro
     path('cadastro/',views.cadastro,name='cadastro'),
@@ -26,5 +27,5 @@ urlpatterns = [
     path('cadastro/professor',views.cadastro_professor,name='cadastro_professor'),
 
     #Popular banco de dados (PRATICIDADE)
-    path('popularbd/',views.popular_bd,name='popularBd'),
+    path('popularbd/',views.popular_bd,name='popularBd')
 ]
