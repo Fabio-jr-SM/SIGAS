@@ -141,13 +141,21 @@ def registrar_falta(request, disciplina_id):
                                                                     'pessoa_logada':pessoa_logada})
 
 
-def registrar_atividade(request,disciplina_id):
+def registrar_atividade(request, disciplina_id):
     pessoa_logada = get_object_or_404(Pessoa, user=request.user)
-
     disciplina = Disciplina.objects.get(pk=disciplina_id)
-    return render(request,'users/professor/registar_atividade.html',{'disciplina':disciplina,
-                                                                     'disciplina_id':disciplina_id,
-                                                                     'pessoa_logada':pessoa_logada})
+    
+    if pessoa_logada.professor:  # Verifica se é professor
+        if request.method == 'POST':
+            descricao = request.POST.get('descricao')
+            if descricao:  # Verifica se há uma descrição
+                atividade = RegistroAtividade.objects.create(descricao=descricao, disciplina=disciplina)
+                return HttpResponseRedirect(reverse('pagina_diario', args=[disciplina_id]))
+            else:
+                messages.error(request, "A descrição da atividade é obrigatória.")
+        return render(request, 'users/professor/registrar_atividade.html', {'disciplina': disciplina, 'pessoa_logada': pessoa_logada})
+    else:
+        return HttpResponse("Você não tem permissão para acessar esta página.")
 
 
 '''

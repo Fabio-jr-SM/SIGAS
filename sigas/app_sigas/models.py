@@ -91,4 +91,11 @@ class RegistroFalta(models.Model):
     quantidade_faltas = models.IntegerField(default=0)
     data = models.DateField(default=datetime.date.today)
 
-    
+
+#NOVOS
+class RegistroAtividade(models.Model):
+    descricao = models.TextField()
+    registro_aula = models.ForeignKey(RegistroAula, on_delete=models.CASCADE, related_name='atividades')
+
+class notas(models.Model):
+    nota = models.FloatField(default='')

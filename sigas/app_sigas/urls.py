@@ -19,7 +19,7 @@ urlpatterns = [
     path('pagina/diario/<int:disciplina_id>/', views.diario_detalhado, name='diario_detalhado'),
     path('pagina/diario/<int:disciplina_id>/registraraula/', views.registrar_aula, name='registrar_aula'),
     path('pagina/diario/<int:disciplina_id>/registrarfalta/', views.registrar_falta, name='registrar_falta'),
-    path('pagina/diario/<int:disciplina_id>/registraratividade/', views.registrar_atividade, name='registrar_atividade'),
+    path('pagina/diario/<int:disciplina_id>/registraratividade/', views.registrar_atividade, name='registrar_falta'),
     
     #cadastro
     path('cadastro/',views.cadastro,name='cadastro'),
