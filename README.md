@@ -10,7 +10,7 @@
 # Sistema Integrado de Gestão Escolar Simplificado (SIGAS)
 
 <!-- Substitua a seguinte imagem por uma logo do seu projeto -->
-<img src="/sigas/app_sigas/static/img/logoSigas.png" width="150px">
+<img src="/sigas/app_sigas/static/img/logoSigas.png" width="250px">
 
 <!-- Substitua o seguinte parágrafo por um resumo do seu projeto: -->
 O Projeto é voltado para toda rede de ensino, um sistema integrado e simples onde
