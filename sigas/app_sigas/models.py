@@ -33,6 +33,21 @@ class Pessoa(models.Model):
         related_query_name="%(app_label)s_%(class)s",
     )  
 
+class Curso(models.Model):
+    nome = models.CharField(max_length=100)
+    duracao = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.nome
+
+class Disciplina(models.Model):
+    nome = models.CharField(max_length=100)
+    turno = models.CharField(max_length=100,default='')
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE,default='')
+    
+    def __str__(self):
+        return self.nome
+   
 class Aluno(models.Model):
     pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
     curso = models.ManyToManyField('Curso', related_name='aluno',default='')
@@ -45,16 +60,12 @@ class Aluno(models.Model):
 
     data_de_ingresso = models.DateField(default=datetime.date.today)
     situacao_academica = models.CharField(max_length=20, choices=SITUACAO_ACADEMICA_CHOICES, default='Ativo')
-    
+    disciplinas = models.ManyToManyField(Disciplina, related_name='alunos')
+
     def __str__(self):
         return self.pessoa.nome_completo
 
-class Curso(models.Model):
-    nome = models.CharField(max_length=100)
-    duracao = models.CharField(max_length=100)
-    
-    def __str__(self):
-        return self.nome
+
     
 class Professor(models.Model):
     pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE)
@@ -63,15 +74,7 @@ class Professor(models.Model):
     turno = models.CharField(max_length=100, default='')
     remuneracao = models.FloatField()
     
-
-class Disciplina(models.Model):
-    nome = models.CharField(max_length=100)
-    turno = models.CharField(max_length=100,default='')
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE,default='')
-    
-    def __str__(self):
-        return self.nome
-    
+ 
 class InscricaoDisciplina(models.Model):
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
@@ -92,10 +95,15 @@ class RegistroFalta(models.Model):
     data = models.DateField(default=datetime.date.today)
 
 
-#NOVOS
+
 class RegistroAtividade(models.Model):
     descricao = models.TextField()
     registro_aula = models.ForeignKey(RegistroAula, on_delete=models.CASCADE, related_name='atividades')
 
-class notas(models.Model):
+    def __str__(self):
+        return str(self.registro_aula)
+    
+class Notas(models.Model):
     nota = models.FloatField(default='')
+    atividade = models.ForeignKey(RegistroAtividade,on_delete=models.CASCADE)
+    aluno = models.ForeignKey(Aluno,on_delete=models.CASCADE)

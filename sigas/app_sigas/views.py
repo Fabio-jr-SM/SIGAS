@@ -1,13 +1,13 @@
 from django.shortcuts import render,redirect,get_object_or_404 
 
-#autenticacao
+#autenticacao 
 from django.contrib.auth import authenticate,logout
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 #banco de dados
-from .models import Aluno, InscricaoDisciplina,Professor,Pessoa,Curso,Disciplina,RegistroAula, RegistroFalta
+from .models import Aluno, InscricaoDisciplina, Notas,Professor,Pessoa,Curso,Disciplina, RegistroAtividade,RegistroAula, RegistroFalta
 
 #calendario
 import calendar
@@ -65,9 +65,12 @@ def diario(request):
 
     return render(request, 'users/professor/diario.html', {'disciplinas': disciplinas_do_professor,'pessoa_logada':pessoa_logada})
 
+
 @login_required(login_url='login')
 def diario_detalhado(request, disciplina_id):
+    disciplina = Disciplina.objects.get(pk=disciplina_id)
     pessoa_logada = get_object_or_404(Pessoa, user=request.user)
+    alunos = Aluno.objects.filter(curso=disciplina.curso)
 
     # Obtenha a disciplina com o ID fornecido ou retorne um erro 404 se não existir
     disciplina = get_object_or_404(InscricaoDisciplina, disciplina_id=disciplina_id)
@@ -75,11 +78,20 @@ def diario_detalhado(request, disciplina_id):
     # Acesse os registros de aula relacionados à disciplina específica
     registros_aula = RegistroAula.objects.filter(disciplina=disciplina.disciplina)
 
+    # Filtrar as atividades relacionadas aos registros de aula
+    atividades = RegistroAtividade.objects.filter(registro_aula__in=registros_aula)
+
+    # Filtrar as notas dos alunos
+    notas = Notas.objects.filter(atividade__in=atividades)
+
     return render(request, 'users/professor/diario_detalhado.html', 
                   {'disciplina': disciplina.disciplina, 
                    'registros_aula': registros_aula, 
                    'disciplina_id': disciplina_id,
-                   'pessoa_logada':pessoa_logada})
+                   'pessoa_logada': pessoa_logada,
+                   'alunos': alunos,
+                   'atividades': atividades,
+                   'notas': notas})
 
 
 '''
@@ -140,23 +152,37 @@ def registrar_falta(request, disciplina_id):
                                                                     'alunos': alunos,
                                                                     'pessoa_logada':pessoa_logada})
 
+def registrar_atividade(request, registro_aula_id, disciplina_id):
 
-def registrar_atividade(request, disciplina_id):
     pessoa_logada = get_object_or_404(Pessoa, user=request.user)
+    registro_aula = RegistroAula.objects.get(pk=registro_aula_id)
     disciplina = Disciplina.objects.get(pk=disciplina_id)
-    
-    if pessoa_logada.professor:  # Verifica se é professor
-        if request.method == 'POST':
-            descricao = request.POST.get('descricao')
-            if descricao:  # Verifica se há uma descrição
-                atividade = RegistroAtividade.objects.create(descricao=descricao, disciplina=disciplina)
-                return HttpResponseRedirect(reverse('pagina_diario', args=[disciplina_id]))
-            else:
-                messages.error(request, "A descrição da atividade é obrigatória.")
-        return render(request, 'users/professor/registrar_atividade.html', {'disciplina': disciplina, 'pessoa_logada': pessoa_logada})
-    else:
-        return HttpResponse("Você não tem permissão para acessar esta página.")
+    alunos = Aluno.objects.filter(curso=disciplina.curso)
 
+    if request.method == "POST":
+        descricao = request.POST.get('descricao')
+
+        # Criar o objeto RegistroAtividade usando o objeto RegistroAula correspondente
+        novo_registro_atividade = RegistroAtividade.objects.create(descricao=descricao, registro_aula=registro_aula)
+
+        # Obter o ID da atividade criada
+        atividade_id = novo_registro_atividade.id
+
+        # Lançar notas
+        for aluno in alunos:
+            nota = request.POST.get(f"nota_{aluno.id}")
+
+            # Criar o objeto Notas para cada aluno
+            Notas.objects.create(nota=nota, atividade=novo_registro_atividade, aluno=aluno)
+
+        # Redirecionar após o registro das notas
+        return redirect('diario')
+        
+    return render(request, 'users/professor/registrar_atividade.html', {'registro_aula_id': registro_aula_id,
+                                                                        'pessoa_logada': pessoa_logada,
+                                                                        'registro_aula': registro_aula,
+                                                                        'disciplina_id': disciplina_id,
+                                                                        'alunos': alunos})
 
 '''
 LOGIN E LOGOUT
@@ -364,3 +390,75 @@ def cadastro_professor(request):
     
     return render(request,'autenticacao/cadastro/cadastro_professor.html',{'disciplinas_com_cursos': disciplinas_com_cursos})
 
+
+
+'''
+ALUNO - BOLETIN
+'''
+def boletin_aluno(request):
+    # Obtém a pessoa logada
+    pessoa_logada = get_object_or_404(Pessoa, user=request.user)
+    
+    # Obtém o aluno correspondente à pessoa logada
+    aluno = pessoa_logada.aluno
+    
+    # Obtém todas as notas do aluno
+    notas_aluno = Notas.objects.filter(aluno=aluno)
+    disciplinas_do_aluno = aluno.disciplinas.all()
+
+    # Criar um dicionário para armazenar as notas por disciplina
+    notas_por_disciplina = {}
+    for nota in notas_aluno:
+        disciplina = nota.atividade.registro_aula.disciplina
+        if disciplina not in notas_por_disciplina:
+            notas_por_disciplina[disciplina] = []
+        notas_por_disciplina[disciplina].append(nota)
+    
+    # Adicionar disciplinas do aluno que não têm notas associadas
+    for disciplina in disciplinas_do_aluno:
+        if disciplina not in notas_por_disciplina:
+            notas_por_disciplina[disciplina] = []
+
+    # Renderiza o template com as informações do boletim
+    return render(request, 'users/student/boletin_aluno.html', {
+        'notas_por_disciplina': notas_por_disciplina,
+        'pessoa_logada': pessoa_logada,
+    })
+
+
+
+
+
+'''
+
+
+def diario_detalhado(request, disciplina_id):
+    disciplina = Disciplina.objects.get(pk=disciplina_id)
+    pessoa_logada = get_object_or_404(Pessoa, user=request.user)
+    alunos = Aluno.objects.filter(curso=disciplina.curso)
+
+    # Obtenha a disciplina com o ID fornecido ou retorne um erro 404 se não existir
+    disciplina = get_object_or_404(InscricaoDisciplina, disciplina_id=disciplina_id)
+
+    # Acesse os registros de aula relacionados à disciplina específica
+    registros_aula = RegistroAula.objects.filter(disciplina=disciplina.disciplina)
+
+    # Filtrar as atividades relacionadas aos registros de aula
+    atividades = RegistroAtividade.objects.filter(registro_aula__in=registros_aula)
+
+    # Filtrar as notas dos alunos
+    notas = Notas.objects.filter(atividade__in=atividades)
+
+    return render(request, 'users/professor/diario_detalhado.html', 
+                  {'disciplina': disciplina.disciplina, 
+                   'registros_aula': registros_aula, 
+                   'disciplina_id': disciplina_id,
+                   'pessoa_logada': pessoa_logada,
+                   'alunos': alunos,
+                   'atividades': atividades,
+                   'notas': notas})
+
+
+
+
+'''

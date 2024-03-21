@@ -1,0 +1,73 @@
+<!--REGISTRAE ATIVIDADE-->
+{% extends 'base.html' %}
+
+{% block title %}
+Sigas - Detalhado
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    {% include 'utils/asidebar.html' %}
+
+    {% if pessoa_logada.professor %}
+    <div class="main p-3">
+        <div class="container">
+            <h4>Registrar Atividade</h4>
+            <a href="{% url 'diario_detalhado' disciplina_id %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
+            
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Detalhes da Aula</h5>
+                    <p class="card-text">Horário de Início: {{ registro_aula.horario_inicio }}</p>
+                    <p class="card-text">Horário de Fim: {{ registro_aula.horario_fim }}</p>
+                    <p class="card-text">Descrição: {{ registro_aula.descricao }}</p>
+                </div>
+            </div>
+            
+            
+            <form action="{% url 'registrar_atividade' registro_aula_id disciplina_id %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group mt-4">
+                    <label for="descricao">Descrição atividade:</label>
+                    <textarea id="descricao" name="descricao" class="form-control" required></textarea>
+                </div>
+
+
+                <!--Registrar nota-->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Aluno</th>
+                                <th>Notas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for aluno in alunos %}
+                            <tr>
+                                <td>{{ aluno.pessoa.nome_completo }}</td>
+                                <td>
+                                    <input type="hidden" name="aluno_id" value="{{ aluno.id }}">
+                                    <input type="number" class="form-control" name="nota_{{ aluno.id }}" placeholder="Nota"
+                                        required>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <button type="submit" class="btn btn-secondary mt-4">Registrar Aula</button>
+            </form>
+        </div>
+        {% else %}
+            <h2>Você não tem acesso a essa pagina</h2>
+        {% endif %}
+        {% include 'utils/footer.html' %}
+    </div>
+</div>
+
+
+
+{% endblock %}

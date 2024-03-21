@@ -1,23 +1,48 @@
 {% extends 'base.html' %}
 
-{% load allauth i18n %}
-
 {% block title %}
-Sigas - Aluno
+Sigas - Boletim
 {% endblock %}
 
 {% block content %}
 <div class="wrapper">
     {% include 'utils/asidebar.html' %}
 
-    {% if user.is_authenticated %}
+    {% if pessoa_logada.aluno %}
     <div class="main p-3">
         <div class="container">
-            <h2>Bem vindo, {{ user.username }}</h2>
+            <h2>Boletim</h2>
+            <p class="mt-4">Nome: {{ pessoa_logada.nome_completo }}</p>
+            <p>Matricula: {{ pessoa_logada.matricula }}</p>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Disciplina</th>
+                        <th>Nota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for disciplina, notas in notas_por_disciplina.items %}
+                    <tr>
+                        <td>{{ disciplina.nome }}</td>
+                        {% if notas %}
+                            <td>
+                                {% for nota in notas %}
+                                {{ nota.nota }}
+                                {% endfor %}
+                            </td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
     {% else %}
-    <p>Você não está autenticado</p>
+    <p>Você não está autenticado como aluno</p>
     {% endif %}
 </div>
 {% endblock %}

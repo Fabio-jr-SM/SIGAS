@@ -14,7 +14,40 @@
 " width="150px">
 
 <!-- Substitua o seguinte parágrafo por um resumo do seu projeto: -->
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+O Projeto é voltado para toda rede de ensino, um sistema integrado e simples onde
+o Aluno, Professor e um Administrador Da diretoria de ensino tem acesso. 
+O sistema SIGAS é capaz:
+<ul>
+    <li><strong>Professor:</strong>
+        <ul>
+            <li>Registrar Aula;</li>
+            <li>Registrar Atividade;</li>
+            <li>Registrar Faltas;</li>
+            <li>Registrar Notas;</li>
+        </ul>
+    </li>
+    <li><strong>Aluno:</strong>
+        <ul>
+            <li>Visualizar Boletim com as notas lançadas;</li>
+        </ul>
+    </li>
+    <li><strong>Administrador:</strong>
+        <ul>
+            <li>CRUD Aluno;</li>
+            <li>CRUD Professor;</li>
+            <li>CRUD Curso;</li>
+            <li>CRUD Disciplina;</li>
+        </ul>
+    </li>
+</ul>
+
+## Outras Tecnologias
+<ul>
+    <li>Sistema de Login;</li>
+    <li>Envio de Email Confirmando Cadastro;</li>
+    <li>Cotrole de Páginas dos usuarios Logados;</li>
+</ul>
+    
 
 ## Documentação
 
@@ -26,4 +59,4 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 <!-- Coloque seu nome, uma foto sua e uma pequena bio sobre você na seguinte tabela: -->
 |  |  |
 |:-------------:|:------------------------------------------------------------:|
-|  <img src="img/profilepic.png" width="150px"></br> **Fábio Júnior Senna Moura** | - Ensino Médio Técnico em informática pelo Instituto Federal de Mato Grosso (IFMT) - Campus Cuiabá Cel. Octayde Jorge da Silva e Graduação em andamento em Engenharia de Computação em Instituto Federal de Mato Grosso (IFMT) - Campus Cuiabá Cel. Octayde Jorge da Silva. |
+|  <img src="img/profile.jpg" width="150px"></br> **Fábio Júnior Senna Moura** | - Ensino Médio Técnico em informática pelo Instituto Federal de Mato Grosso (IFMT) - Campus Cuiabá Cel. Octayde Jorge da Silva e Graduação em andamento em Engenharia de Computação em Instituto Federal de Mato Grosso (IFMT) - Campus Cuiabá Cel. Octayde Jorge da Silva. |
