@@ -15,4 +15,5 @@ Sugestões de serviços de hospedagem para pesquisar:
 
 ## Modelagem de banco de dados
 
-<a href="https://dbdesigner.page.link/p5pqp1WQu3zTS5JRA">Clique aqui para acessar o Modelo Lógico do Banco de dados</a>
+<img src="/img/bancoDadosLogico.png">
+
