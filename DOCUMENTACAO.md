@@ -15,4 +15,4 @@ Sugestões de serviços de hospedagem para pesquisar:
 
 ## Modelagem de banco de dados
 
-Coloque aqui a modelagem do banco de dados desenvolvido no projeto. Você pode colocar diagramas conceituais e lógicos, ou até mesmo descrever textualmente o que cada uma das tabelas e atributos representam. 
+<a href="https://dbdesigner.page.link/p5pqp1WQu3zTS5JRA">Clique aqui para acessar o Modelo Lógico do Banco de dados</a>
