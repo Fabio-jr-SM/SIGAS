@@ -7,7 +7,7 @@
 
 **Este projeto foi desenvolvido como atividade final do curso de capacitação em Python da Cyber Edux, realizado de setembro de 2023 até março de 2024. Para mais informações, consulte o [enunciado](ENUNCIADO.md).**
 
-# Sistema Integrado de Gestão Escolar Simplificado (SIGAS)
+# Sistema Integrado de Gestão Acadêmica Simplificado (SIGAS)
 
 <!-- Substitua a seguinte imagem por uma logo do seu projeto -->
 <img src="/sigas/app_sigas/static/img/logoSigas.png" width="250px">
