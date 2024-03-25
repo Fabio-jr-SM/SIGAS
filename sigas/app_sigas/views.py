@@ -310,7 +310,7 @@ def cadastro_aluno(request):
         aluno_user = User.objects.create_user(username=username_matricula, password=senha,email=email)
         
         aluno_user.save()
-        #dando acesso somente a pagina do professor
+        #dando acesso somente a pagina do aluno
         assign_role(aluno_user,Alunopermission)
 
         #criando pessoa
@@ -428,37 +428,3 @@ def boletin_aluno(request):
 
 
 
-
-'''
-
-
-def diario_detalhado(request, disciplina_id):
-    disciplina = Disciplina.objects.get(pk=disciplina_id)
-    pessoa_logada = get_object_or_404(Pessoa, user=request.user)
-    alunos = Aluno.objects.filter(curso=disciplina.curso)
-
-    # Obtenha a disciplina com o ID fornecido ou retorne um erro 404 se não existir
-    disciplina = get_object_or_404(InscricaoDisciplina, disciplina_id=disciplina_id)
-
-    # Acesse os registros de aula relacionados à disciplina específica
-    registros_aula = RegistroAula.objects.filter(disciplina=disciplina.disciplina)
-
-    # Filtrar as atividades relacionadas aos registros de aula
-    atividades = RegistroAtividade.objects.filter(registro_aula__in=registros_aula)
-
-    # Filtrar as notas dos alunos
-    notas = Notas.objects.filter(atividade__in=atividades)
-
-    return render(request, 'users/professor/diario_detalhado.html', 
-                  {'disciplina': disciplina.disciplina, 
-                   'registros_aula': registros_aula, 
-                   'disciplina_id': disciplina_id,
-                   'pessoa_logada': pessoa_logada,
-                   'alunos': alunos,
-                   'atividades': atividades,
-                   'notas': notas})
-
-
-
-
-'''

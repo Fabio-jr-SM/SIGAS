@@ -37,9 +37,6 @@ class DisciplinaAdmin(admin.ModelAdmin):
     list_display = ('id', 'nome', 'turno', 'curso')
 
     
-
-
-
 class RegistroAulaAdmin(admin.ModelAdmin):
     list_display = ('id', 'horario_inicio','horario_fim','descricao')
 
