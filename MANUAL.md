@@ -4,16 +4,39 @@ Este guia oferece instruções sobre como utilizar a interface gráfica do Proje
 
 1. **Login:**
    - Ao acessar a interface gráfica, você será direcionado para a página de login.
-   - Insira seu nome de usuário e senha nos campos correspondentes.
+   - Insira seu nome de usuário e senha nos campos correspondentes que você será redirecionado para alguma das páginas.
    - Clique no botão "Entrar" para fazer login na plataforma.
 
 2. **Painel Principal:**
    - Após fazer login com sucesso, você será redirecionado para o painel principal.
    - Aqui, você terá acesso às principais funcionalidades do sistema, como visualizar cursos, disciplinas, alunos, professores, etc.
-
+   - Caso você entre com login de Administrador:
+     <li><strong>Administrador:</strong>
+        <ul>
+            <li>CRUD Aluno;</li>
+            <li>CRUD Professor;</li>
+            <li>CRUD Curso;</li>
+            <li>CRUD Disciplina;</li>
+        </ul>
+    </li>
+   - Caso você entre com login de Professor:
+   <li><strong>Professor:</strong>
+        <ul>
+            <li>Registrar Aula;</li>
+            <li>Registrar Atividade;</li>
+            <li>Registrar Faltas;</li>
+            <li>Registrar Notas;</li>
+        </ul>
+    </li>
+   - Caso você entre com login de Aluno:
+   <li><strong>Aluno:</strong>
+        <ul>
+            <li>Visualizar Boletim com as notas lançadas;</li>
+        </ul>
+    </li>
+    
 3. **Navegação:**
    - Utilize o menu principal ou os botões de navegação na interface para acessar diferentes seções do sistema.
-   - Por exemplo, você pode clicar em "Cursos" para visualizar todos os cursos disponíveis ou em "Alunos" para ver a lista de alunos matriculados.
 
 4. **Visualização de Dados:**
    - Em cada seção (como Cursos, Alunos, Professores, etc.), você verá uma lista dos itens correspondentes.
