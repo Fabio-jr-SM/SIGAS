@@ -10,10 +10,9 @@ O projeto integrador é uma parte crucial do curso de Capacitação em Python of
 2. **Crie um Fork do Repositório**: Faça uma cópia do repositório para sua conta do GitHub.
 3. **Desenvolva sua Solução**: Implemente a funcionalidade desejada ou corrija o problema escolhido.
 4. **Mantenha a Documentação Atualizada**: Se necessário, atualize a documentação para refletir as alterações feitas.
-5. **Envie um Pull Request**: Submeta suas alterações como um Pull Request para revisão. Certifique-se de incluir uma descrição clara das alterações realizadas.
 
 ### Diretrizes de Código
-- Siga as convenções de codificação Python PEP8.
+- Siga as convenções de codificação Python.
 - Mantenha o código limpo e legível.
 - Utilize comentários adequados para explicar trechos de código complexos.
 - Evite duplicação de código e siga os princípios do DRY (Don't Repeat Yourself).
@@ -51,6 +50,10 @@ Para garantir o bom funcionamento e desenvolvimento eficiente do projeto, é imp
 
 1. **Inicialização do Servidor de Desenvolvimento**:
    - No terminal, navegue até a pasta raiz do projeto.
+   - Execute as migrações:
+      ```
+     python manage.py migrate
+     ```
    - Execute o seguinte comando para iniciar o servidor de desenvolvimento do Django:
      ```
      python manage.py runserver
@@ -77,8 +80,6 @@ Para garantir o bom funcionamento e desenvolvimento eficiente do projeto, é imp
 #### Contribuindo com o Projeto
 
 Ao contribuir com o projeto, siga as diretrizes de contribuição fornecidas anteriormente. Certifique-se de testar suas alterações localmente antes de enviar um Pull Request para revisão. Comunique-se com os mantenedores do projeto caso tenha dúvidas ou sugestões.
-
-Agora você está pronto para depurar e desenvolver o Projeto Integrador Cyber Edux! Se tiver alguma dúvida durante o processo, não hesite em entrar em contato com a equipe responsável.
 
 ## Modelagem de banco de dados
 O projeto utiliza um banco de dados para armazenar informações sobre pessoas, cursos, disciplinas, alunos, professores, inscrições em disciplinas, registros de aulas, registros de faltas, registros de atividades e notas.
@@ -113,10 +114,6 @@ Aqui estão os modelos de dados definidos no projeto:
 - Os campos de data e hora utilizam a biblioteca `datetime` para fornecer informações precisas.
 - A configuração de email é feita através de um arquivo `.env` na pasta raiz do projeto.
 
-Para executar o projeto localmente e interagir com o banco de dados, siga as instruções no [Guia de Desenvolvimento](guia_desenvolvimento.md).
-
 ---
 
 <img src="/img/bancoDadosLogico.png">
-
-Agradecemos antecipadamente por sua contribuição para o Projeto Integrador Cyber Edux. Sua participação é fundamental para o sucesso contínuo deste projeto.
