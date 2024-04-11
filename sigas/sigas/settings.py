@@ -131,6 +131,7 @@ ROLE_PERMISSIONS_MODULE = "sigas.app_sigas.roles"
 ROLEPERMISSIONS_REDIRECT_TO_LOGIN = True
 
 #Email
+
 DEFAULT_FROM_EMAIL = "sistema.sigas@gmail.com"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
