@@ -28,7 +28,13 @@ SECRET_KEY = 'django-insecure-!1b+lqrcct#vo-ykr_6d+q&h*cp_42=^go6w%cvpkpp_=@kj#g
 DEBUG = True
 
 ALLOWED_HOSTS = []
+'''
 
+SECRET_KEY: Certifique-se de que a chave secreta não seja exposta em um ambiente de produção.
+DEBUG: Deve ser False em produção.
+ALLOWED_HOSTS: Deve ser configurado com os domínios permitidos em produção
+
+'''
 
 # Application definition
 

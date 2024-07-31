@@ -2,6 +2,8 @@ from django.urls import path
 from app_sigas import views
 from django.views.generic.base import RedirectView
 
+app_name = 'app_sigas'  # Define o namespace para esta aplicação
+
 urlpatterns = [
     #acesso e sair
     path('login/',views.login_view,name='login'),
