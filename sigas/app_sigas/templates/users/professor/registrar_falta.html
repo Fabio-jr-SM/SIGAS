@@ -12,11 +12,11 @@ Sigas - Registrar Falta
         <div class="main p-3">
             <div class="container mt-5">
                 <h2>Registrar Falta</h2>
-                <a href="{% url 'diario_detalhado' disciplina.id %}" class="btn btn-secondary mb-3"><i
+                <a href="{% url 'app_sigas:diario_detalhado' disciplina.id %}" class="btn btn-secondary mb-3"><i
                         class="bi bi-arrow-left"></i></a>
                 <h5 class="mt-4">{{ disciplina.nome }}</h5>
 
-                <form action="{% url 'registrar_falta' disciplina.id %}" method="POST">
+                <form action="{% url 'app_sigas:registrar_falta' disciplina.id %}" method="POST">
                     {% csrf_token %}
                     <div class="table-responsive">
                         <table class="table table-striped">

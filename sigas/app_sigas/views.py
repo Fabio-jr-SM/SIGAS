@@ -119,7 +119,7 @@ def registrar_aula(request, disciplina_id):
         )
 
         # Redirecione para a página de detalhes do diário com o ID do registro de aula
-        return redirect('diario_detalhado', disciplina_id=disciplina_id)
+        return redirect('app_sigas:diario_detalhado', disciplina_id=disciplina_id)
 
     return render(request, 'users/professor/registrar_aula.html', {'disciplina_id': disciplina_id,
                                                                    'pessoa_logada':pessoa_logada})
@@ -143,7 +143,7 @@ def registrar_falta(request, disciplina_id):
             # Verifique se a aula_id não é None antes de criar o RegistroFalta
             if aula_id is not None:
                 RegistroFalta.objects.create(aluno=aluno, aula=aula_id, quantidade_faltas=quantidade_faltas)
-                return redirect('diario')
+                return redirect('app_sigas:diario')
             else:
                 return render(request, 'users/professor/registrar_falta.html', {'disciplina': disciplina, 'disciplina_id': disciplina_id, 'alunos': alunos})
 
@@ -176,7 +176,7 @@ def registrar_atividade(request, registro_aula_id, disciplina_id):
             Notas.objects.create(nota=nota, atividade=novo_registro_atividade, aluno=aluno)
 
         # Redirecionar após o registro das notas
-        return redirect('diario')
+        return redirect('app_sigas:diario')
         
     return render(request, 'users/professor/registrar_atividade.html', {'registro_aula_id': registro_aula_id,
                                                                         'pessoa_logada': pessoa_logada,
@@ -191,7 +191,7 @@ LOGIN E LOGOUT
 def logout_view(request):
     logout(request)
     # Redirect to a page after logout
-    return redirect('login')
+    return redirect('app_sigas:login')
 
 
 def login_view(request):
@@ -207,7 +207,7 @@ def login_view(request):
         
         if user is not None:
             login_django(request, user)
-            return redirect('pagina_inicial')  # Redireciona para a página Inicial
+            return redirect('app_sigas:pagina_inicial')  # Redireciona para a página Inicial
         else:
             error_message = 'Credenciais inválidas. Tente novamente.'
 
@@ -331,7 +331,7 @@ def cadastro_aluno(request):
                   'sistema.sigas@gmail.com',
                   [email])
 
-        return redirect('cadastro')
+        return redirect('app_sigas:cadastro')
     return render(request,'autenticacao/cadastro/cadastro_aluno.html',{'cursos':cursos})
 
 def cadastro_professor(request):
@@ -386,7 +386,7 @@ def cadastro_professor(request):
                   'sistema.sigas@gmail.com',
                   [email])
 
-        return redirect('cadastro')
+        return redirect('app_sigas:cadastro')
     
     return render(request,'autenticacao/cadastro/cadastro_professor.html',{'disciplinas_com_cursos': disciplinas_com_cursos})
 

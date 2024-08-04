@@ -12,9 +12,9 @@ Sigas - Cadastro Professor
 
     <div class="main p-3">
         <div class="container">
-            <a href="{% url 'cadastro' %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
+            <a href="{% url 'app_sigas:cadastro' %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
             <h5 class="mt-4">Cadastrar Professor:</h5>
-            <form action="{% url 'cadastro_professor' %}" method="POST">
+            <form action="{% url 'app_sigas:cadastro_professor' %}" method="POST">
                 {% csrf_token %}
                 <!--Email-->
                 <div class="form-group">

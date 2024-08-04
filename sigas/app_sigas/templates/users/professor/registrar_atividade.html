@@ -14,7 +14,7 @@ Sigas - Detalhado
     <div class="main p-3">
         <div class="container">
             <h4>Registrar Atividade</h4>
-            <a href="{% url 'diario_detalhado' disciplina_id %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
+            <a href="{% url 'app_sigas:diario_detalhado' disciplina_id %}" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i></a>
             
             <div class="card mt-4">
                 <div class="card-body">
@@ -26,7 +26,7 @@ Sigas - Detalhado
             </div>
             
             
-            <form action="{% url 'registrar_atividade' registro_aula_id disciplina_id %}" method="POST">
+            <form action="{% url 'app_sigas:registrar_atividade' registro_aula_id disciplina_id %}" method="POST">
                 {% csrf_token %}
                 <div class="form-group mt-4">
                     <label for="descricao">Descrição atividade:</label>

@@ -26,7 +26,7 @@ Sigas
 
             <h4 class="d-flex align-items-center"><i class="bi bi-lock-fill mr-2"></i>Login SIGAS</h4> 
 
-            <form action="{% url 'login' %}" method="post" class="mt-3">
+            <form action="{% url 'app_sigas:login' %}" method="post" class="mt-3">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="Matricula">Matrícula</label>

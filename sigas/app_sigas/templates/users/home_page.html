@@ -27,26 +27,26 @@ Sigas - Inicio
                         <ul class="list-group list-group-flush w-3">
                             {% if pessoa_logada.aluno %}
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="{% url 'boletin' %}"><i class="bi bi-newspaper"></i>Boletins</a>
+                                    class="nav-link" href="{% url 'app_sigas:boletin' %}"><i class="bi bi-newspaper"></i>Boletins</a>
                             </li>
 
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="{% url 'perfil' %}"><i
+                                    class="nav-link" href="{% url 'app_sigas:perfil' %}"><i
                                         class="bi bi-person-circle"></i>Perfil</a>
                             </li>
                             {% elif pessoa_logada.professor %}
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="{% url 'diario' %}"><i
+                                    class="nav-link" href="{% url 'app_sigas:diario' %}"><i
                                         class="bi bi-envelope-paper-fill"></i>Diario</a>
                             </li>
 
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="{% url 'perfil' %}"><i
+                                    class="nav-link" href="{% url 'app_sigas:perfil' %}"><i
                                         class="bi bi-person-circle"></i>Perfil</a>
                             </li>
                             {% elif user.is_staff %}
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="{% url 'cadastro' %}"><i
+                                    class="nav-link" href="{% url 'app_sigas:cadastro' %}"><i
                                         class="bi bi-person-fill-add"></i>Cadastro Usuario</a>
                             </li>
                             {% endif %}
