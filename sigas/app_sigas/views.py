@@ -207,7 +207,7 @@ def login_view(request):
         
         if user is not None:
             login_django(request, user)
-            return redirect('pagina_inicial')  # Redireciona para a página do aluno
+            return redirect('pagina_inicial')  # Redireciona para a página Inicial
         else:
             error_message = 'Credenciais inválidas. Tente novamente.'
 
