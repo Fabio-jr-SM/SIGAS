@@ -51,10 +51,18 @@ Sigas - Inicio
 
                             <!--Acesso Rapido Admin-->
                             {% elif user.is_staff %}
-                            <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                    class="nav-link" href="{% url 'app_sigas:cadastro' %}"><i
-                                        class="bi bi-person-fill-add"></i>Cadastro Usuario</a>
+                            
+                            <li class="list-group-item custom-bg" style="background-color: transparent !important;">
+                                <a class="nav-link" href="{% url 'app_sigas:cadastro' %}">
+                                    <i class="bi bi-person-fill-add"></i>Gerenciamento de Usuários
+                                </a>
                             </li>
+
+                            <li class="list-group-item custom-bg"><a class="nav-link" href="#"><i class="bi bi-journal-bookmark-fill"></i>Gerenciamento Disciplinas</a></li>
+                            <li class="list-group-item custom-bg"><a class="nav-link" href="#"><i class="bi bi-people-fill"></i>Gerenciamento Turmas</a></li>
+                            <li class="list-group-item custom-bg"><a class="nav-link" href="#"><i class="bi bi-clipboard-data-fill"></i>Gerenciamento Relatórios</a></li>
+                            <li class="list-group-item custom-bg"><a class="nav-link" href="#"><i class="bi bi-calendar2-event-fill"></i>Gerenciamento Calendário Escolar</a></li>
+
                             {% endif %}
 
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
