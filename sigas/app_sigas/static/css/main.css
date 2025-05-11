@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-
-
 /*ASIDE BAR*/
 ::after,
 ::before {
@@ -257,4 +255,33 @@ a.sidebar-link:hover {
 
 .custom-bg a:hover{
     color: #000ff0;
+}
+
+
+
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.card {
+    border-radius: 12px;
+    border: none;
+    background-color: #ffffff;
+}
+
+.btn-outline-secondary:hover, .btn-outline-secondary:focus {
+    background-color: #3b7ddd;
+    color: white;
+    border-color: #3b7ddd;
+}
+
+.btn-primary {
+    background-color: #3b7ddd;
+    border-color: #3b7ddd;
+}
+
+.btn-primary:hover {
+    background-color: #2e65bd;
+    border-color: #2e65bd;
 }

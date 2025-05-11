@@ -26,28 +26,27 @@ Sigas - Inicio
                         <h5 class="text-secondary">Acesso Rápido:</h5>
                         <ul class="list-group list-group-flush w-3">
 
-                            <!--Acesso Rapido Aluno-->
-                            {% if pessoa_logada.aluno %}
-                            <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                class="nav-link" href="{% url 'app_sigas:boletin' %}"><i class="bi bi-newspaper"></i>Boletins</a>
-                            </li>
-                            
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
                                 class="nav-link" href="{% url 'app_sigas:perfil' %}"><i
                                 class="bi bi-person-circle"></i>Perfil</a>
                             </li>
 
+                            <!--Acesso Rapido Aluno-->
+                            {% if pessoa_logada.aluno %}
+                            <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
+                                class="nav-link" href="{% url 'app_sigas:boletin' %}"><i class="bi bi-newspaper"></i>Boletins</a>
+                            </li>
+                            <li class="list-group-item custom-bg"><a class="nav-link" href="#"><i class="bi bi-people-fill"></i> Minha Turma</a></li>
+                            <li class="list-group-item custom-bg"><a class="nav-link" href="#"><i class="bi bi-book-fill"></i> Minhas Disciplinas</a></li>
+
                             <!--Acesso Rapido Professor-->
                             {% elif pessoa_logada.professor %}
                             <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
                                 class="nav-link" href="{% url 'app_sigas:diario' %}"><i
-                                class="bi bi-envelope-paper-fill"></i>Diario</a>
+                                class="bi bi-envelope-paper-fill"></i>Diario de Aula</a>
                             </li>
-                            
-                            <li class="list-group-item custom-bg" style="background-color: transparent !important;"><a
-                                class="nav-link" href="{% url 'app_sigas:perfil' %}"><i
-                                class="bi bi-person-circle"></i>Perfil</a>
-                            </li>
+                            <li class="list-group-item custom-bg"><a class="nav-link" href="#"><i class="bi bi-mortarboard-fill"></i> Minhas Turmas</a></li>
+                            <li class="list-group-item custom-bg"><a class="nav-link" href="#"><i class="bi bi-bar-chart-fill"></i> Relatórios de Aula</a></li>
 
                             <!--Acesso Rapido Admin-->
                             {% elif user.is_staff %}
